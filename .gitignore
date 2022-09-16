@@ -1,0 +1,9 @@
+googletest-release-1.8.0/*
+release-1.8.0.tar.gz
+a.out
+include/database.h.gch
+test_main
+demo_main
+source/obj/*
+test/obj/*
+example.txt

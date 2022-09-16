@@ -1,0 +1,79 @@
+Things to do this sprint:
+
+Mark off check box once completed, tested, pulled, merged
+Claim what you're working on by putting your name in the check box
+
+--------------------------------------
+Document
+--------------------------------------
+[ ] Constructors
+[ ] Implement get() specializations (talk to me about this)
+[ Fahed ] Implement get_id()
+[Tristan] Implement to_string()
+[Tristan] Implement json_get_field()
+
+--------------------------------------
+Collection
+--------------------------------------
+[ ] Constructors
+[ Fahed ] Implement get_name()
+[ Fahed ] Implement change_name()
+[ ] Implement add_document()
+[ Fahed ] Implement get_document()
+[ ] Implement update_document()
+[ ] Implement remove_document()
+
+--------------------------------------
+Database
+--------------------------------------
+[ ] Constructor
+[ ] Implement get_collection_names()
+[ ] Implement change_collection_name()
+[ ] Implement set_current_collection()
+[ ] Implement add_collection()
+[ ] Implement remove_collection()
+[ ] Implement load_collection()
+[ ] Implement add_document()
+[ Fahed ] Implement get_document()
+[ ] Implement update_document()
+[ ] Implement remove_document()
+
+
+Documentation:
+
+--------------------------------------
+Document
+--------------------------------------
+Constructors ----- will need to initialize id to next_id, increment next_id, if applicable copy json to data. We may want to remove excess white space, but we can talk about that later
+get() ------------ will return primative data type or throw error for object, array, null I can do this if we need
+get_id() --------- return id
+to_string() ------ write data as a tabbed structure
+json_get_field() - returns std::string::iterator to first character of data and character after data assoc'd with field
+    e.g. json_get_field(R"({"name":["Bill","Skarsgaard"],"age":31,"occupation":"actor"})", "name")
+    would return iterators         ^                    ^
+
+--------------------------------------
+Collection
+--------------------------------------
+Constructors ------ set name to name, if provided open file, read each json entry (I can implement since I need to make a bracket matcher anyway) and use to make documents
+get_name() -------- return name
+change_name() ----- replace name with new name
+add_document() ---- create document from json
+get_document() ---- find document with matching id, return document
+update_document() - will need json parser, finds requested field with json_get_data() replace chunk, repeat for all fields provided 
+remove_document() - erase document from collections
+
+--------------------------------------
+Database
+--------------------------------------
+Constructor -------------- set current_current collection to collections.end() or nullptr, if we make it a pointer instead
+get_collection_names() --- collect names in vector, return
+change_collection_name() - change collection with old_name to have new_name
+set_current_collection() - change current_collection to point to specified collection
+add_collection() --------- puch_back new collection
+remove_collection() ------ erase collection
+load_collection() -------- push_back collection with file constructor
+add_document() ----------- call current_collection->add_document()
+get_document() ----------- call current_collection->get_document()
+update_document() -------- call current_collection->update_document()
+remove_document() -------- call current_collection->remove_document()

@@ -1,0 +1,23 @@
+[
+    {
+        "Name": ["Tristan","Naess"],
+        "Occupation": "Student",
+        "Hobbies": ["Programming", "Sewing", "Electronics", "Music", "Skiing"]
+    },
+    {
+        "Name": ["Wes","Anderson"],
+        "Occupation": "Director",
+        "Films": [
+            { "Name":"Bottle Rocket", "Year":1996, "Roles": ["Director"] },
+            { "Name":"Rushmore", "Year":1998, "Roles": ["Director"] },
+            { "Name":"The Royal Tenenbaums", "Year":2001, "Roles": ["Director", "Tennis Match Commentator #1 (voice, uncredited)"] },
+            { "Name":"The Life Aquatic with Steve Zissou", "Year":2004, "Roles": ["Director"] },
+            { "Name":"The Dargeeling Limited", "Year":2007, "Roles": ["Director"] },
+            { "Name":"Fantastic Mr. Fox", "Year":2009, "Roles": ["Director", "Weasel (voice)"] },
+            { "Name":"Moonrise Kingdom", "Year":2012, "Roles": ["Director"] },
+            { "Name":"The Grand Budapest Hotel", "Year":2014, "Roles": ["Director"] },
+            { "Name":"Isle of Dogs", "Year":2018, "Roles": ["Director"] },
+            { "Name":"The French Dispatch", "Year":2021, "Roles": ["Director"] }
+        ]
+    }
+]

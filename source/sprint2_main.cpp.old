@@ -1,0 +1,106 @@
+#include "database.h"
+#include <iostream>
+
+int main(int argc, char ** argv)
+{
+    Database db;
+
+    // Database::add_collection() x some number
+    for (size_t i = 1; i < 7; i++)
+    {
+        auto status = db.add_collection("Collection " + std::to_string(i));
+        if(status.success)
+        {
+            std::cout << "Collection " << i << " added successfully\n";
+        }
+        else
+        {
+            std::cout << "Error adding Collection " << i << "\n";
+        }
+    }
+    // Database::get_collection_names()
+    std::cout << "Collections:\n";
+    for (const auto& i : db.get_collection_names())
+    {
+        std::cout << i << '\n';
+    }
+
+    // Database::change_collection_name()
+    std::cout << "Renaming \"Collection 2\" to \"Collection B\"\n";
+    db.change_collection_name("Collection 2", "Collection B");
+
+    // Database::load_collection()
+    std::cout << "\nDatabase::load_collection()\n";
+    db.load_collection("Collection from file", "datasets/test_data.json");
+
+    // Database::remove_collection()
+    std::cout << "\nDatabase::remove_collection()\n";
+    db.remove_collection("Collection 5");
+
+    // Database::get_collection_names()
+    std::cout << "Collections:\n";
+    for (const auto& i : db.get_collection_names())
+    {
+        std::cout << i << '\n';
+    }
+    
+    // Database::set_current_collection() the loaded one
+    std::cout << "\nDatabase::set_current_collection():\n";
+    db.set_current_collection("Collection from file");
+
+    // Database::add_document()
+    std::cout << "\nDatabase::add_document():\n";
+    std::cout << "document added with id: " << db.add_document("{\"foo\":1}") << '\n';
+
+    std::cout << db.get_document(2).to_string() << '\n';
+
+    // Database::get_document()
+    std::cout << "\nDatabase::get_document():\n";
+    std::cout << db.get_document(0).to_string() << '\n';
+
+    // Document::get<...>(fields)
+    std::cout << "\nget<...>(fields):\n";
+    std::string s = db.get_document(0).get<std::string>("string field");
+    int i = db.get_document(0).get<int>("int field");
+    double d = db.get_document(0).get<double>("double field");
+    bool t = db.get_document(0).get<bool>("true field");
+    bool f = db.get_document(0).get<bool>("false field");
+    bool n = db.get_document(0).get<bool>("null field");
+    int a = db.get_document(0).get<json_array>("array field").get<int>(0);
+    bool o = db.get_document(0).get<json_object>("object field").get<bool>("field2");
+    std::cout << "\nprinting all objects retrieved with get<...>(fields):\n"
+                << "string field: " << s << "\n"
+                << "int field: " << i << "\n"
+                << "double field: " << d << "\n"
+                << "true field: " << t << "\n"
+                << "false field: " << f << "\n"
+                << "null field: " << n << "\n"
+                << "array field: " << a << "\n"
+                << "json field: " << o << "\n";
+    
+    // Database::remove_document()
+    std::cout << db.get_document(1).to_string() << '\n';
+    db.remove_document(1);
+
+
+    // Database::get_document() the removed document catch error
+    try
+    {
+        db.get_document(1);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << e.what() << '\n';
+    }
+
+    // Database::update_document()
+    std::cout << "\nDatabase::update_document()\n";
+    db.update_document(0, "{\"int field\": -1}"); // basic field
+    db.update_document(0, "{\"array field\":[1:90]}"); // array field
+    db.update_document(0, "{\"object field\":{\"field1\":\"hello world\"}}"); // object field
+    db.update_document(0, "{\"double field\": delete}");
+
+    // Database::get_docment() get updated and to_string()
+    std::cout << "\nDatabase::get_document():\n";
+    std::cout << db.get_document(0).to_string() << '\n';
+}

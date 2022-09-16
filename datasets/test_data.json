@@ -1,0 +1,16 @@
+{"string field": "foobar",
+ "int field": 42, 
+ "double field": -3.14159, 
+ "true field":true, 
+ "false field":false, 
+ "null field":null, 
+ "array field":[1,2,3,4,5], 
+ "object field":{
+    "field1":true,
+    "field2":false
+    }
+}
+{
+    "field1" : "foo",
+    "field2" : "bar"
+}

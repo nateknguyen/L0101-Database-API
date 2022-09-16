@@ -1,0 +1,170 @@
+// declarations of functions and classes
+// truncated names:
+    // std omitted
+    // int = size_t except when get<int>() -> int
+
+match_quote(line : string, quote_index : int) -> int
+
+match_bracket(line : string, quote_bracket : int) -> int
+
+de_whitespace_json(line : string) -> std::string
+
+tokenize_json(json : string) -> vector<string>
+smash_json(tokens : vector<string>) -> string
+
+tokenize_array(json : string) -> vector<string>
+smash_array(tokens : vector<string>) -> string
+
+verify_json(json : string) -> void (throws on syntax error)
+
+class json_array
+{
+    public:
+        json_array()
+        json_array(data : string)
+        template get(field : int) -> T (throws on incorrect type)
+        is_null(field : int) -> bool (throws on missing field)
+
+    private:
+        get_as_string(field : int) (throws on index-out-of-bounds)
+}
+
+Specializations:
+    json_array::get<T>(field):
+        string
+        int
+        float
+        bool
+        json_object
+        json_array
+
+class json_object
+{
+    public:
+        json_array()
+        json_array(data : string)
+        template get(field : int) -> T (throws on incorrect type)
+        is_null(field : int) -> bool (throws on missing field)
+
+    private:
+        get_as_string(field : int) (throws on key dne)
+}
+
+Specializations:
+    json_object::get<T>(field):
+        string
+        int
+        float
+        bool
+        json_object
+        json_array
+
+json_extract_string(data : string, field : string) -> string (throws if ret doesn't match string)
+json_extract_int(data : string, field : string) -> int (throws if ret doesn't match string)
+json_extract_double(data : string, field : string) -> double (throws if ret doesn't match string)
+json_extract_bool(data : string, field : string) -> bool (throws if ret doesn't match string)
+json_extract_object(data : string, field : string) -> object (throws if ret doesn't match string)
+json_extract_array(data : string, field : string) -> array (throws if ret doesn't match string)
+json_is_null(data : string, field : string) -> bool (throws if missing field)
+
+class Document
+{
+    public:
+        Document()
+        Document(json : string)
+        Document(id : int, json : string)
+
+        template get(field : string) -> T (throws on incorrect type)
+        template query(path : string) -> T (throws on incorrect type)
+
+        get_id() -> int
+
+        to_string() -> string
+
+    private:
+        query_as_string(path : string) -> string (throws on bad path)
+}
+
+Specializations:
+    Document::get<T>(field):
+        string
+        int
+        float
+        bool
+        json_object
+        json_array
+
+    Document::query<T>(field):
+        string
+        int
+        float
+        bool
+        json_object
+        json_array
+
+tokenize_pattern(pattern : string) -> pair<vector<string>,vector<string>> (throws on syntax error)
+
+get_first_field(query : string) -> pair<string, string>
+
+class Collection
+{
+    public:
+        Collection(name : string, tempfilepath : string)
+        Collection(name : string, filepath : string, tempfilepath : string)
+        
+        load(filepath : string) -> void (throws if failed to open file)
+        cache(filepath : string) -> void (throws if failed to open file)
+
+        save(filepath : string) -> void (throws if failed to open file)
+
+        get_name() -> string
+        change_name(new_name : string) -> void
+
+        add_document(json : string) -> int
+        
+        get_document(id : int) -> Document(ref) (throws if no doc with id)
+        get_documents(pattern : string) -> vector<Document>(const) (throws if empty or syntax error)
+
+        update_document(id : int, data : string) -> void (throw if no doc with id)
+        update_documents(pattern : string, data : string) -> void (throw if empty or syntax error)
+
+        remove_document(id : int) -> void (throw if no doc with id)
+        remove_documents(pattern : string) -> void (throw if empty or syntax error)
+
+    private:
+        clear_from_ram() -> void
+}
+
+class Database
+{
+    public:
+        Database(filepath : string) (throws if filepath doesn't exist)
+        ~Database() (explicit because temp file cleanup)
+
+        get_collection_names() -> vector<string>
+        change_collection_name(old_name : string, new_name : string) -> void (throw if name dne)
+
+        set_current_collection(name : string) -> void (throw if name dne)
+
+        add_collection(name : string) -> void (throw if name already exists)
+        add_collection_from_file(name : string, filepath : string) -> void (throw if name already exists, file dne)
+
+        save_current_collection(filepath : string) -> void (throws if no current collection or file dne)
+        load_current_collection(filepath : string) -> void (throws if no current collection or file dne)
+
+        get_ids() -> vector<int> (throw if no current collection)
+        
+        begin() -> vector<Document>::iterator (throws if no current collection)
+        end() -> vector<Document>::iterator (throws if no current collection)
+
+        add_document(json : string) -> int (throws if no current collection)
+        
+        get_document(id : int) -> Document(ref) (throws if no doc with id or no current collection)
+        get_documents(pattern : string) -> vector<Document>(const) (throws if empty, syntax error, or no current collection)
+
+        update_document(id : int, data : string) -> void (throw if no doc with id or no current collection)
+        update_documents(pattern : string, data : string) -> void (throw if empty, syntax error, or no current collection)
+
+        remove_document(id : int) -> void (throw if no doc with id or no current collection)
+        remove_documents(pattern : string) -> void (throw if empty, syntax error or no current collection)
+}

@@ -1,0 +1,25 @@
+Database
+	- collections vector<Collection>
+	+ get_collection_names() -> names
+	+ get_collection(name) -> Collection&
+	+ add_collection(name) -> bool
+	+ remove_collection(name) -> bool
+	+ load_collection(file) -> load_report
+
+Collection
+	- Documents vector<Document>
+	+ add_document(json) -> id
+	+ get_document(id) -> Document&
+	+ get_documents("pattern") -> vector<Document&>
+	+ update_document(id, "field:val") -> bool
+	+ update_documents("match_pattern", "field:val") -> bool
+	+ remove_document(id) -> bool
+	+ remove_documents("pattern") -> bool(s?)
+
+Document
+	- id size_t
+	- data string
+	+ get<T>("field") -> val T
+	+ to_string() -> string
+
+
